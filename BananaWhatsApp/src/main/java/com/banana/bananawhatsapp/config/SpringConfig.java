@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ComponentScan(basePackages = {"com.banana.bananawhatsapp.persistence", "com.banana.bananawhatsapp.service"})
+@ComponentScan(basePackages = {"com.banana.bananawhatsapp.persistencia", "com.banana.bananawhatsapp.servicios"})
 @PropertySource("classpath:application.properties")
 @EntityScan("com.banana.bananawhatsapp.modelos")
 public class SpringConfig {
