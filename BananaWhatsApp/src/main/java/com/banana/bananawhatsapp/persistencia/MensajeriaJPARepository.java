@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,9 +15,13 @@ import java.util.List;
 @Getter
 @Repository
 public class MensajeriaJPARepository implements IMensajeRepository {
+    @PersistenceContext
+    EntityManager em;
+
     @Override
     public Mensaje crear(Mensaje mensaje) throws SQLException {
-        return null;
+        em.persist(mensaje);
+        return mensaje;
     }
 
     @Override
