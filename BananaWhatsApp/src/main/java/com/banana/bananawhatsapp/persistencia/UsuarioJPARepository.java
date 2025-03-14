@@ -1,5 +1,6 @@
 package com.banana.bananawhatsapp.persistencia;
 
+import com.banana.bananawhatsapp.exceptions.UsuarioException;
 import com.banana.bananawhatsapp.modelos.Usuario;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,20 +15,24 @@ import java.util.Set;
 @Setter
 @Getter
 @Repository
-public class UsuarioJPARepository implements IUsuarioRepository{
+public class UsuarioJPARepository implements IUsuarioRepository {
 
     @PersistenceContext
     EntityManager em;
 
     @Override
     public Usuario obtener(int id) throws SQLException {
-
         return em.find(Usuario.class, id);
     }
 
     @Override
     @Transactional
     public Usuario crear(Usuario usuario) throws SQLException {
+        try {
+            usuario.valido();
+        } catch (UsuarioException e) {
+            throw new SQLException(e);
+        }
         em.persist(usuario);
         return usuario;
     }
@@ -35,17 +40,26 @@ public class UsuarioJPARepository implements IUsuarioRepository{
     @Override
     @Transactional
     public Usuario actualizar(Usuario usuario) throws SQLException {
-        em.persist(usuario);
+        try {
+            usuario.valido();
+        } catch (UsuarioException e) {
+            throw new UsuarioException();
+        }
+        em.merge(usuario);
         return usuario;
     }
 
     @Override
+    @Transactional
     public boolean borrar(Usuario usuario) throws SQLException {
-        return false;
+        Usuario userToDelete = em.find(Usuario.class, usuario.getId());
+        userToDelete.setActivo(false);
+        em.merge(userToDelete);
+        return !userToDelete.isActivo();
     }
 
     @Override
     public Set<Usuario> obtenerPosiblesDestinatarios(Integer id, Integer max) throws SQLException {
-        return null;
+        return Set.of();
     }
 }
