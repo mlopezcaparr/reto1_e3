@@ -24,6 +24,7 @@ class BananaWhatsAppApplicationTest {
     EntityManager em;
     @Test
     public void load(){
+        DBUtil.reloadDB();
         assertNotNull(em);
         assertTrue(true);
     }
