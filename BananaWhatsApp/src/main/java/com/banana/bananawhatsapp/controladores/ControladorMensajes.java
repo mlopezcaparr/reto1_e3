@@ -3,10 +3,10 @@ package com.banana.bananawhatsapp.controladores;
 import com.banana.bananawhatsapp.modelos.Mensaje;
 import com.banana.bananawhatsapp.modelos.Usuario;
 import com.banana.bananawhatsapp.servicios.IServicioMensajeria;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -14,6 +14,7 @@ public class ControladorMensajes {
     @Autowired
     private IServicioMensajeria servicioMensajeria;
 
+    @SneakyThrows
     public boolean enviarMensaje(Integer remitente, Integer destinatario, String texto) {
         try {
             Usuario uRemitente = new Usuario();
@@ -26,11 +27,12 @@ public class ControladorMensajes {
             return true;
         } catch (Exception e) {
             System.out.println("Ha habido un error: " + e.getMessage());
-            throw new RuntimeException("Error al enviar mensaje", e);
+            throw e;
         }
 
     }
 
+    @SneakyThrows
     public boolean mostrarChat(Integer remitente, Integer destinatario) {
         try {
             Usuario uRemitente = new Usuario();
@@ -50,11 +52,12 @@ public class ControladorMensajes {
             return true;
         } catch (Exception e) {
             System.out.println("Ha habido un error: " + e.getMessage());
-            throw new RuntimeException("Error al mostrar el chat entre dos usuarios", e);
+            throw e;
         }
 
     }
 
+    @SneakyThrows
     public boolean eliminarChatConUsuario(Integer remitente, Integer destinatario) {
         try {
             Usuario uRemitente = new Usuario();
@@ -71,7 +74,7 @@ public class ControladorMensajes {
             return isOK;
         } catch (Exception e) {
             System.out.println("Ha habido un error: " + e.getMessage());
-            throw new RuntimeException("Error al eliminar el chat", e);
+            throw e;
         }
 
     }

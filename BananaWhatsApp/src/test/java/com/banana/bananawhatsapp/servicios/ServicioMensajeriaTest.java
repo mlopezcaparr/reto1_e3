@@ -66,7 +66,8 @@ class ServicioMensajeriaTest {
     @Test
     void dadoRemitenteYDestinatarioNOValido_cuandoMostrarChatConUsuario_entoncesExcepcion() throws Exception {
         Usuario remitente = repoUsuario.obtener(1);
-        Usuario destinatario = new Usuario(2, null, null, null, false);
+        repoUsuario.borrar(repoUsuario.obtener(2));
+        Usuario destinatario = repoUsuario.obtener(2);
         assertThrows(Exception.class, () -> {
             List<Mensaje> userMessages = servicio.mostrarChatConUsuario(remitente, destinatario);
         });
@@ -83,7 +84,8 @@ class ServicioMensajeriaTest {
     @Test
     void dadoRemitenteYDestinatarioNOValido_cuandoBorrarChatConUsuario_entoncesExcepcion() throws Exception {
         Usuario remitente = repoUsuario.obtener(1);
-        Usuario destinatario = new Usuario(2, null, null, null, false);
+        repoUsuario.borrar(repoUsuario.obtener(2));
+        Usuario destinatario = repoUsuario.obtener(2);
         assertThrows(Exception.class, () -> {
             boolean borrarChat = servicio.borrarChatConUsuario(remitente, destinatario);
         });
