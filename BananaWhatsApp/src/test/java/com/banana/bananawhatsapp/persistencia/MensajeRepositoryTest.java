@@ -1,6 +1,6 @@
 package com.banana.bananawhatsapp.persistencia;
 
-import com.banana.bananawhatsapp.exceptions.MensajeException;
+import com.banana.bananawhatsapp.config.SpringConfig;
 import com.banana.bananawhatsapp.exceptions.UsuarioException;
 import com.banana.bananawhatsapp.modelos.Mensaje;
 import com.banana.bananawhatsapp.modelos.Usuario;
@@ -8,25 +8,38 @@ import com.banana.bananawhatsapp.util.DBUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDate;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {SpringConfig.class})
+@EnableAutoConfiguration
 class MensajeRepositoryTest {
 
+    @Autowired
     IUsuarioRepository repoUsuario;
 
+    @Autowired
     IMensajeRepository repoMensaje;
 
     @BeforeEach
     void cleanAndReloadData() {
         DBUtil.reloadDB();
+    }
+
+    @Test
+    public void load() {
+        assertNotNull(repoUsuario);
+        assertTrue(true);
     }
 
     @Test
@@ -59,6 +72,10 @@ class MensajeRepositoryTest {
         Usuario user = repoUsuario.obtener(1);
 
         List<Mensaje> userMessages = repoMensaje.obtener(user);
+        for(Mensaje mensaje : userMessages) {
+            //muestro mensajes
+            System.out.println(mensaje.getCuerpo());
+        }
         assertNotNull(userMessages);
     }
 
@@ -112,5 +129,4 @@ class MensajeRepositoryTest {
             repoMensaje.borrarTodos(user);
         });
     }
-
 }
