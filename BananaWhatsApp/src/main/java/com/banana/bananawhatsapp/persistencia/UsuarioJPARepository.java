@@ -23,7 +23,11 @@ public class UsuarioJPARepository implements IUsuarioRepository {
 
     @Override
     public Usuario obtener(int id) throws SQLException {
-        return em.find(Usuario.class, id);
+        Usuario usuario = em.find(Usuario.class, id);
+        if (usuario==null){
+            throw new UsuarioException();
+        }
+        return usuario;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class UsuarioJPARepository implements IUsuarioRepository {
     @Override
     public Set<Usuario> obtenerPosiblesDestinatarios(Integer id, Integer max) throws SQLException {
         try {
-           Usuario usuario = em.find(Usuario.class, id);
+            Usuario usuario = em.find(Usuario.class, id);
             usuario.valido();
         } catch (Exception e) {
             throw new UsuarioException();
