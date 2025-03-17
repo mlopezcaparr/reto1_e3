@@ -4,6 +4,7 @@ import com.banana.bananawhatsapp.modelos.Mensaje;
 import com.banana.bananawhatsapp.modelos.Usuario;
 import com.banana.bananawhatsapp.servicios.IServicioMensajeria;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ControladorMensajes {
@@ -21,7 +22,7 @@ public class ControladorMensajes {
             return true;
         } catch (Exception e) {
             System.out.println("Ha habido un error: " + e.getMessage());
-            throw e;
+            throw new RuntimeException("Error al enviar mensaje", e);
         }
 
     }
@@ -45,7 +46,7 @@ public class ControladorMensajes {
             return true;
         } catch (Exception e) {
             System.out.println("Ha habido un error: " + e.getMessage());
-            throw e;
+            throw new RuntimeException("Error al mostrar el chat entre dos usuarios", e);
         }
 
     }
@@ -66,7 +67,7 @@ public class ControladorMensajes {
             return isOK;
         } catch (Exception e) {
             System.out.println("Ha habido un error: " + e.getMessage());
-            throw e;
+            throw new RuntimeException("Error al eliminar el chat", e);
         }
 
     }

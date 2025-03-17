@@ -41,9 +41,23 @@ public class MensajeriaJPARepository implements IMensajeRepository {
     }
 
     @Override
+    public List<Mensaje> obtenerChat(Usuario remitente, Usuario destinatario) throws SQLException {
+        if(remitente.valido() && destinatario.valido()) {
+            TypedQuery<Mensaje> query = em.createQuery(
+                    "SELECT m FROM Mensaje m WHERE (m.remitente = :remitente AND m.destinatario = :destinatario)" +
+                            " OR (m.remitente = :destinatario AND m.destinatario = :remitente)", Mensaje.class);
+            query.setParameter("remitente", remitente);
+            query.setParameter("destinatario", destinatario);
+            return query.getResultList();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     @Transactional
     public boolean borrarEntre(Usuario remitente, Usuario destinatario) throws Exception {
-        if(remitente.valido()) {
+        if(remitente.valido() && destinatario.valido()) {
             TypedQuery<Mensaje> query = em.createQuery(
                     "SELECT m FROM Mensaje m WHERE (m.remitente = :remitente AND m.destinatario = :destinatario)" +
                             " OR (m.remitente = :destinatario AND m.destinatario = :remitente)", Mensaje.class);
